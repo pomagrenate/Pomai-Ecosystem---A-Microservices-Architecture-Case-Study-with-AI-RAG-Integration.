@@ -1,0 +1,13 @@
+services:
+  pomaiem_frontend:
+    build:
+      context: .
+    container_name: pomaiem_frontend
+    ports:
+      - "4173:80"
+    networks:
+      - pomaieco_network
+
+networks:
+  pomaieco_network:
+    external: true

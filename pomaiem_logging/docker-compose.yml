@@ -1,0 +1,52 @@
+services:
+  logging_api:
+    build:
+      context: .
+    container_name: logging_api
+    command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8005", "--workers", "4"]
+    ports:
+      - "8005:8005"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  logging_embedder:
+    build:
+      context: .
+    container_name: logging_embedder
+    command: ["python", "src/workers/embedder.py"]
+    environment:
+      - KAFKA_BROKER=logging_kafka:9092
+      - ES_URL=http://logging_es:9200
+      - QDRANT_URL=http://logging_qdrant:6333
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  logging_worker:
+    build:
+      context: .
+    container_name: logging_worker
+    command: ["python", "src/workers/llm_worker.py"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  logging_ui:
+    build:
+      context: .
+    container_name: logging_ui
+    command: ["python", "-m", "streamlit", "run", "src/ui/agent_ui.py", "--server.port", "8501"]
+    ports:
+      - "8501:8501"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+networks:
+  pomaieco_network:
+    external: true

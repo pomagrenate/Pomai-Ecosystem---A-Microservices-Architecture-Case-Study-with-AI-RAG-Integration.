@@ -1,0 +1,24 @@
+services:
+  realtime_hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: realtime_hub
+    restart: unless-stopped
+    env_file:
+      - .env.example
+    environment:
+      # Override the example env with Docker Compose network values
+      - KAFKA_BROKERS=logging_kafka:9092
+    ports:
+      - "3001:3001"
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+    networks:
+      - pomaieco_network
+
+networks:
+  pomaieco_network:
+    external: true

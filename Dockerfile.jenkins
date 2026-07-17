@@ -1,0 +1,19 @@
+FROM jenkins/jenkins:lts
+
+# Switch to root to install packages and have permission to access the host's docker.sock
+USER root
+
+# Install dependencies, Docker CLI, and Docker Compose plugin
+RUN apt-get update && \
+    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \
+    apt-get install -y docker-ce-cli docker-compose-plugin
+
+# Globally allow Jenkins to read git workspaces owned by other users
+RUN git config --system --add safe.directory '*'
+
+# Note: We leave USER as root so the Jenkins process inside the container
+# has permissions to read/write to the mounted /var/run/docker.sock from the host.

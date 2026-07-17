@@ -1,0 +1,211 @@
+services:
+  auth_service:
+    build:
+      context: .
+    container_name: auth_service
+    environment:
+      - WORKSPACE=services/shared/auth_service
+      - DATABASE_URL=postgresql://pomegranate:pomegranate@postgres:5432/auth_db?schema=public
+    ports:
+      - "3002:3002"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+
+  workspace_team_service:
+    build:
+      context: .
+    container_name: workspace_team_service
+    environment:
+      - WORKSPACE=services/pomaiem/workspace_team_service
+    ports:
+      - "3006:3006"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  task_goal_service:
+    build:
+      context: .
+    container_name: task_goal_service
+    environment:
+      - WORKSPACE=services/pomaiem/task_goal_service
+      - KAFKA_BROKERS=logging_kafka:9092
+    ports:
+      - "3003:3003"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  hr_payroll_service:
+    build:
+      context: .
+    container_name: hr_payroll_service
+    environment:
+      - WORKSPACE=services/pomaiem/hr_payroll_service
+    ports:
+      - "4020:4020"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  chat_service:
+    build:
+      context: .
+    container_name: chat_service
+    environment:
+      - WORKSPACE=services/pomaiem/chat_service
+      - MINIO_ENDPOINT=pomaieco_minio
+      - MINIO_PORT=9000
+      - MINIO_ROOT_USER=pomaieco_admin
+      - MINIO_ROOT_PASSWORD=pomaieco_password123
+      - MINIO_BUCKET=pomaiem-chat
+      - KAFKA_BROKERS=logging_kafka:9092
+    ports:
+      - "4000:4000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  activity_service:
+    build:
+      context: .
+    container_name: activity_service
+    environment:
+      - WORKSPACE=services/pomaiem/activity_service
+      - CASSANDRA_CONTACT_POINTS=chat_cassandra
+    ports:
+      - "3008:3008"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  notification_service:
+    build:
+      context: .
+    container_name: notification_service
+    environment:
+      - WORKSPACE=services/pomaiem/notification_service
+      - KAFKA_BROKERS=logging_kafka:9092
+    ports:
+      - "3007:3007"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  agent_service:
+    build:
+      context: .
+    container_name: agent_service
+    environment:
+      - WORKSPACE=services/pomaiem/agent_service
+    ports:
+      - "3009:3009"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  organization_service:
+    build:
+      context: .
+    container_name: organization_service
+    environment:
+      - WORKSPACE=services/pomaiconnect/organization_service
+    ports:
+      - "4100:4100"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  connection_service:
+    build:
+      context: .
+    container_name: connection_service
+    environment:
+      - WORKSPACE=services/pomaiconnect/connection_service
+    ports:
+      - "4101:4101"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  messaging_service:
+    build:
+      context: .
+    container_name: messaging_service
+    environment:
+      - WORKSPACE=services/pomaiconnect/messaging_service
+    ports:
+      - "4102:4102"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  pomaidraw_collaboration_service:
+    build:
+      context: ./services/pomaidraw/collaboration_service
+    container_name: pomaidraw_collaboration_service
+    ports:
+      - "4015:4015"
+    environment:
+      - COLLABORATION_SERVICE_PORT=4015
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  collaboration_service:
+    build:
+      context: .
+    container_name: collaboration_service
+    environment:
+      - WORKSPACE=services/pomaiconnect/collaboration_service
+    ports:
+      - "4103:4103"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  moderation_service:
+    build:
+      context: .
+    container_name: moderation_service
+    environment:
+      - WORKSPACE=services/pomaiconnect/moderation_service
+    ports:
+      - "4104:4104"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+  pomaidraw_storage_service:
+    build:
+      context: .
+    container_name: pomaidraw_storage_service
+    environment:
+      - WORKSPACE=services/pomaidraw/storage_service
+    ports:
+      - "4200:4200"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pomaieco_network
+
+
+networks:
+  pomaieco_network:
+    external: true

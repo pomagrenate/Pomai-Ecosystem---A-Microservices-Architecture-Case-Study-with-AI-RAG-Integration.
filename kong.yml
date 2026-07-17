@@ -1,0 +1,320 @@
+_format_version: "3.0"
+
+services:
+  # ---------------------------------------------------------
+  # Realtime WebSocket Hub
+  # ---------------------------------------------------------
+  - name: realtime-hub
+    url: http://realtime_hub:3001
+    routes:
+      - name: websocket-route
+        paths:
+          - /ws
+        strip_path: false
+        protocols:
+          - http
+          - https
+      - name: internal-publish
+        paths:
+          - /internal/publish
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  # ---------------------------------------------------------
+  # Auth Service
+  # Cổng 3002 theo docker-compose
+  # ---------------------------------------------------------
+  - name: auth-service
+    url: http://auth_service:3002
+    routes:
+      - name: auth-route
+        paths:
+          - /api/auth
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  # ---------------------------------------------------------
+  # Workspace & Team Service
+  # Cổng 3006 theo docker-compose
+  # ---------------------------------------------------------
+  - name: workspace-team-service-workspaces
+    url: http://workspace_team_service:3006
+    routes:
+      - name: workspaces-route
+        paths:
+          - /api/workspaces
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: workspace-team-service-stats
+    url: http://workspace_team_service:3006/stats
+    routes:
+      - name: stats-route
+        paths:
+          - /api/stats
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: workspace-team-service-teams
+    url: http://workspace_team_service:3006/teams
+    routes:
+      - name: teams-route
+        paths:
+          - /api/teams
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: workspace-team-service-storage
+    url: http://workspace_team_service:3006/api/storage
+    routes:
+      - name: storage-route
+        paths:
+          - /api/storage
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  # ---------------------------------------------------------
+  # Task & Goal Service
+  # Cổng 3003 theo docker-compose
+  # ---------------------------------------------------------
+  - name: task-goal-service-goals
+    url: http://task_goal_service:3003/goals
+    routes:
+      - name: goals-route
+        paths:
+          - /api/goals
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: task-goal-service-tasks
+    url: http://task_goal_service:3003/tasks
+    routes:
+      - name: tasks-route
+        paths:
+          - /api/tasks
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: task-goal-service-webhooks
+    url: http://task_goal_service:3003/webhooks
+    routes:
+      - name: webhooks-route
+        paths:
+          - /api/webhooks
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  # ---------------------------------------------------------
+  # HR & Payroll Service
+  # Cổng 4020 theo docker-compose
+  # ---------------------------------------------------------
+  - name: hr-payroll-service-schedules
+    url: http://hr_payroll_service:4020/schedules
+    routes:
+      - name: hr-schedules
+        paths:
+          - /api/schedules
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: hr-payroll-service-checkins
+    url: http://hr_payroll_service:4020/checkins
+    routes:
+      - name: hr-checkins
+        paths:
+          - /api/checkins
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: hr-payroll-service-leaves
+    url: http://hr_payroll_service:4020/leaves
+    routes:
+      - name: hr-leaves
+        paths:
+          - /api/leaves
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: hr-payroll-service-employees
+    url: http://hr_payroll_service:4020/employees
+    routes:
+      - name: hr-employees
+        paths:
+          - /api/employees
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: hr-payroll-service-timesheets
+    url: http://hr_payroll_service:4020/timesheets
+    routes:
+      - name: hr-timesheets
+        paths:
+          - /api/timesheets
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: hr-payroll-service-assets
+    url: http://hr_payroll_service:4020/assets
+    routes:
+      - name: hr-assets
+        paths:
+          - /api/assets
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: hr-payroll-service-payroll
+    url: http://hr_payroll_service:4020/payroll
+    routes:
+      - name: hr-payroll
+        paths:
+          - /api/payroll
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  # ---------------------------------------------------------
+  # Chat Service
+  # Cổng 4000 theo docker-compose
+  # ---------------------------------------------------------
+  - name: chat-service
+    url: http://chat_service:4000
+    routes:
+      - name: chat-route
+        paths:
+          - /api/chat
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  # ---------------------------------------------------------
+  # Platform Services (Activities, Notifications)
+  # Cổng 3007 và 3008 theo docker-compose
+  # ---------------------------------------------------------
+  - name: notification-service
+    url: http://notification_service:3007
+    routes:
+      - name: notifications-route
+        paths:
+          - /api/notifications
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: activity-service
+    url: http://activity_service:3008
+    routes:
+      - name: activities-route
+        paths:
+          - /api/activities
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+plugins:
+  # ---------------------------------------------------------
+  # Global CORS Configuration
+  # ---------------------------------------------------------
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      headers:
+        - Accept
+        - Accept-Version
+        - Content-Length
+        - Content-MD5
+        - Content-Type
+        - Date
+        - Authorization
+      exposed_headers:
+        - Authorization
+      credentials: true
+      max_age: 3600
+
+  # ---------------------------------------------------------
+  # Global Rate Limiting
+  # ---------------------------------------------------------
+  - name: rate-limiting
+    config:
+      minute: 100
+      policy: redis
+      redis:
+        host: "pomaieco_redis"
+        port: 6379
+
+  # ---------------------------------------------------------
+  # Global Proxy Caching
+  # ---------------------------------------------------------
+  - name: proxy-cache
+    config:
+      strategy: memory
+      request_method:
+        - GET
+      response_code:
+        - 200
+      cache_ttl: 300
+      memory:
+        dictionary_name: kong_db_cache
+
+  # ---------------------------------------------------------
+  # Global AI Agent Logging Integration
+  # ---------------------------------------------------------
+  # - name: http-log
+  #   config:
+  #     http_endpoint: "http://logging_api:8005/logs"
+  #     method: POST
+  #     content_type: application/json
+  #     timeout: 10000
+  #     keepalive: 60000
+  #     flush_timeout: 2
+  #     retry_count: 10
+  #     queue:
+  #       max_batch_size: 100
+  #       max_coalescing_delay: 1
+  #       max_entries: 10000
+
+  # ---------------------------------------------------------
+  # Prometheus Monitoring
+  # ---------------------------------------------------------
+  - name: prometheus

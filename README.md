@@ -32,7 +32,8 @@ To understand the *"Why"* behind the technical decisions, the trade-offs, and th
 3. **[From Port-Hell to High Availability (Kong + Nginx)](https://pomaidb-web.vercel.app/blog/api-gateway-kong-nginx-high-availability)** - *Designing an enterprise-grade, SPOF-free API Gateway cluster.*
 4. **[Taking Back Control: A Self-Hosted CI/CD Pipeline](https://pomaidb-web.vercel.app/blog/self-hosted-cicd-gitea-jenkins-docker)** - *Building a zero-downtime deployment engine with Jenkins and Gitea.*
 5. **[AI-Driven Observability: A 1M+ Log Analysis Pipeline](https://pomaidb-web.vercel.app/blog/ai-driven-observability-rag-logging-pipeline)** - *Processing logs with Flink and performing Root Cause Analysis using CPU-only RAG (Llama.cpp).*
-
+6 **[Pomai Ecosystem - The AI Reality Check: Why I Chose Qwen2.5 0.5B and Ditched Heavy Frameworks](https://pomaidb-web.vercel.app/case-studies/ai-reality-check-qwen-no-frameworks) - *Why I chose Qwen2.5 0.5B and Ditched Heavy Frameworks.*
+7 **[Pomai Ecosystem - When One Service Falls, They All Shouldn't: Building Resilience with Circuit Breakers and Retry Logic](https://pomaidb-web.vercel.app/case-studies/circuit-breaker-retry-logic-microservices-resilience) - *When One Service Falls, They All Shouldn't: Building Resilience with Circuit Breakers and Retry Logic*
 ---
 
 ## Repository Showcase (Where to find the code)
